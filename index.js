@@ -25,15 +25,26 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    // await client.connect();
+    await client.connect();
 
 
     const toysCollection = client.db("toysDB").collection("toys");
 
-    app.get('/alltoys', async(req, res ) =>{
-      const result = await toysCollection.find().toArray()
+    app.get('/alltoys/:category', async(req, res ) =>{
+
+     if(req.params.category == "Sports" || req.params.category =="Classic" || req.params.category == "Trucks"){
+      const result = await toysCollection.find({subCategory: req.params.category}).toArray()
+     return res.send(result)
+    }
+    const result = await toysCollection.find({}).toArray()
       res.send(result)
-    })
+    
+     })
+    
+     app.get('/myToys/:email', async(req, res) =>{
+      const result = await toysCollection.find({email: req.params.email}).toArray()
+      res.send(result)
+     })
 
 
     app.post('/toys', async(req, res) =>{

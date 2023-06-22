@@ -6,8 +6,9 @@ require('dotenv').config()
 const app = express()
 const port = process.env.PORT || 5000
 
-app.use(cors({origin:'https://toy-store-98bee.web.app'}))
 app.use(express.json())
+app.use(cors({origin:'https://toy-store-98bee.web.app'}))
+
 
 
 
@@ -47,12 +48,11 @@ async function run() {
      })
 
 
-    app.post('/toys', async(req, res) =>{
-      const body = req.body;
-      const result = await toysCollection.insertOne(body)
-      res.send(result)
-      
-    })
+  app.post('/toys', async(req, res) =>{
+    const body =req.body;
+    const result = await toysCollection.insertOne(body)
+    res.send(result)
+  })
 
    
     // Send a ping to confirm a successful connection
